@@ -26,9 +26,14 @@ namespace Security.DataProtection.WebUI.Controllers
         public async Task<IActionResult> Index()
         {
             var products = await _context.Products.ToListAsync();
+
+            //var timeLimitedDataProtector = _dataProtector.ToTimeLimitedDataProtector();
+
             products.ForEach(x =>
             {
                 x.EncryptedId = _dataProtector.Protect(x.Id.ToString());
+                //x.EncryptedId = timeLimitedDataProtector.Protect(x.Id.ToString(),TimeSpan.FromSeconds(5));
+                // bu şekilde tanımlama yapılrısa 5sn içinde çözülmesine imkan sağlar sonrasında şifre çözülemeyeck 
             });
 
             return _context.Products != null ?
@@ -43,7 +48,11 @@ namespace Security.DataProtection.WebUI.Controllers
             {
                 return NotFound();
             }
+            //var timeLimitedDataProtector = _dataProtector.ToTimeLimitedDataProtector();
             int decrptedId = int.Parse(_dataProtector.Unprotect(id));
+            //int decrptedId = int.Parse(timeLimitedDataProtector.Unprotect(id));
+
+
             var product = await _context.Products
                 .FirstOrDefaultAsync(m => m.Id == decrptedId);
             if (product == null)
@@ -87,6 +96,8 @@ namespace Security.DataProtection.WebUI.Controllers
             int decrptedId = int.Parse(_dataProtector.Unprotect(id));
 
             var product = await _context.Products.FindAsync(decrptedId);
+            product.EncryptedId = id;
+            product.Id = decrptedId;
             if (product == null)
             {
                 return NotFound();
@@ -99,10 +110,10 @@ namespace Security.DataProtection.WebUI.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Stock,Price,CategoryId,CreatedDate,UpdatedDate")] Product product)
+        public async Task<IActionResult> Edit(string id, Product product)
         {
             int decrptedId = int.Parse(_dataProtector.Unprotect(id));
-            if (decrptedId != product.Id)
+            if (id != product.EncryptedId)
             {
                 return NotFound();
             }
