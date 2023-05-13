@@ -1,9 +1,11 @@
+using Security.WhiteBlackList.WebUI.Filter;
 using Security.WhiteBlackList.WebUI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<CheckWhiteList>();
 builder.Services.Configure<IPList>(builder.Configuration.GetSection("IPList"));
 
 var app = builder.Build();
@@ -22,7 +24,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-app.UseMiddleware<IPSafeMiddleware>();
+//app.UseMiddleware<IPSafeMiddleware>(); //Midleware ile whitelist
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

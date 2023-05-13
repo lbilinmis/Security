@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Security.WhiteBlackList.WebUI.Filter;
 using Security.WhiteBlackList.WebUI.Models;
 using System.Diagnostics;
 
@@ -13,6 +14,7 @@ namespace Security.WhiteBlackList.WebUI.Controllers
             _logger = logger;
         }
 
+        [ServiceFilter(typeof(CheckWhiteList))]
         public IActionResult Index()
         {
             return View();
