@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.DataProtection.Web
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.WhiteBlackList.WebUI", "Security.WhiteBlackList.WebUI\Security.WhiteBlackList.WebUI.csproj", "{5A059FA0-3D68-4830-9FB6-7F1BA91EFA98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.SecretProtection.WebUI", "Security.SecretProtection.WebUI\Security.SecretProtection.WebUI.csproj", "{C282A990-DBD9-4B1E-8E49-494E90F44B10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5A059FA0-3D68-4830-9FB6-7F1BA91EFA98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A059FA0-3D68-4830-9FB6-7F1BA91EFA98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A059FA0-3D68-4830-9FB6-7F1BA91EFA98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C282A990-DBD9-4B1E-8E49-494E90F44B10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C282A990-DBD9-4B1E-8E49-494E90F44B10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C282A990-DBD9-4B1E-8E49-494E90F44B10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C282A990-DBD9-4B1E-8E49-494E90F44B10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,5 @@
+﻿SecretManager Tool ile appsetting içerisinde önemli verilerin tutulmaması için gerekli olan bir araç
+Manage User Script diye bir json dosysında bu bilgilerin tutulmasını sağlamamız gerekir.
+secret.json içindeki değerler sanki appsetting.json içinde imiş gibi çalışır
+appsetting içindeki verilerin okunma işlemleri program.cs de nasıl okunuyorsa o şekilde okunmaya devam eder değişen
+birşey yoktur.
