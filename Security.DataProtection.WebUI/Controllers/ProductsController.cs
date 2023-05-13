@@ -25,21 +25,27 @@ namespace Security.DataProtection.WebUI.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-              return _context.Products != null ? 
-                          View(await _context.Products.ToListAsync()) :
-                          Problem("Entity set 'NLayerDBContext.Products'  is null.");
+            var products = await _context.Products.ToListAsync();
+            products.ForEach(x =>
+            {
+                x.EncryptedId = _dataProtector.Protect(x.Id.ToString());
+            });
+
+            return _context.Products != null ?
+                        View(products) :
+                        Problem("Entity set 'NLayerDBContext.Products'  is null.");
         }
 
         // GET: Products/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null || _context.Products == null)
             {
                 return NotFound();
             }
-
+            int decrptedId = int.Parse(_dataProtector.Unprotect(id));
             var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == decrptedId);
             if (product == null)
             {
                 return NotFound();
@@ -71,14 +77,16 @@ namespace Security.DataProtection.WebUI.Controllers
         }
 
         // GET: Products/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string? id)
         {
             if (id == null || _context.Products == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
+            int decrptedId = int.Parse(_dataProtector.Unprotect(id));
+
+            var product = await _context.Products.FindAsync(decrptedId);
             if (product == null)
             {
                 return NotFound();
@@ -91,12 +99,15 @@ namespace Security.DataProtection.WebUI.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Stock,Price,CategoryId,CreatedDate,UpdatedDate")] Product product)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Stock,Price,CategoryId,CreatedDate,UpdatedDate")] Product product)
         {
-            if (id != product.Id)
+            int decrptedId = int.Parse(_dataProtector.Unprotect(id));
+            if (decrptedId != product.Id)
             {
                 return NotFound();
             }
+
+
 
             if (ModelState.IsValid)
             {
@@ -122,15 +133,17 @@ namespace Security.DataProtection.WebUI.Controllers
         }
 
         // GET: Products/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null || _context.Products == null)
             {
                 return NotFound();
             }
+            int decrptedId = int.Parse(_dataProtector.Unprotect(id));
+
 
             var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == decrptedId);
             if (product == null)
             {
                 return NotFound();
@@ -142,25 +155,27 @@ namespace Security.DataProtection.WebUI.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.Products == null)
             {
                 return Problem("Entity set 'NLayerDBContext.Products'  is null.");
             }
-            var product = await _context.Products.FindAsync(id);
+            int decrptedId = int.Parse(_dataProtector.Unprotect(id));
+
+            var product = await _context.Products.FindAsync(decrptedId);
             if (product != null)
             {
                 _context.Products.Remove(product);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductExists(int id)
         {
-          return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
