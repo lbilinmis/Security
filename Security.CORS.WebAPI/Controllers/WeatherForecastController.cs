@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Security.CORS.WebAPI.Controllers
@@ -18,6 +19,7 @@ namespace Security.CORS.WebAPI.Controllers
             _logger = logger;
         }
 
+        [EnableCors("AllowSites2")]
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
